@@ -32,4 +32,8 @@ public class LocationEntity {
 	private String x;
 	private String y;
 	private Long count;
+
+	public void updateCount(Long count) {
+		this.count = count;
+	}
 }

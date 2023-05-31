@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>랭킹 차트</title>
+</head>
+<body>
+<canvas id="rankingChart" width="1000" height="400"></canvas>
+</body>
+<script>
+    const canvas = document.getElementById("rankingChart");
+    let ctx = canvas.getContext('2d');
+
+    fetch("/map/get-location-info-ranking")
+        .then(response => response.json())
+        .then(data => {
+            let count =[];
+            let labels = [];
+            data.forEach(el => {
+                count.push(parseInt(el["count"]))
+                labels.push(el["placeName"])
+            })
+            const width = canvas.width;
+            const height = canvas.height;
+            const barWidth = width / count.length;
+            const maxDataValue = Math.max(...count);
+            const scale = height / maxDataValue;
+
+            for (let i = 0; i < count.length; i++) {
+                const x = i * barWidth;
+                const y = height - count[i] * scale;
+
+                ctx.beginPath();
+                ctx.moveTo(x, height);
+                ctx.lineTo(x, y);
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = 'blue';
+                ctx.stroke();
+
+                // 레이블 그리기
+                ctx.font = '12px Arial';
+                ctx.fillText(labels[i], x + 10, height - 10);
+                ctx.fillText(count[i].toString(), x + 10, y - 10);
+            }
+            console.log(data);
+        })
+        .catch(error => console.log(error));
+</script>
+</html>
