@@ -3,9 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>랭킹 차트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            display: block;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
 <canvas id="rankingChart" width="1000" height="400"></canvas>
+<form action="/" method="get">
+    <button type="submit">홈으로</button>
+</form>
+<form action="/view" method="get">
+    <button type="submit">맛집 지도</button>
+</form>
 </body>
 <script>
     const canvas = document.getElementById("rankingChart");
@@ -14,7 +51,7 @@
     fetch("/map/get-location-info-ranking")
         .then(response => response.json())
         .then(data => {
-            let count =[];
+            let count = [];
             let labels = [];
             data.forEach(el => {
                 count.push(parseInt(el["count"]))
