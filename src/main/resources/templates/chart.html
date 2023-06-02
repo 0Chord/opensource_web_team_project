@@ -20,23 +20,38 @@
         }
 
         button {
+            display: inline-block;
             padding: 10px 20px;
             font-size: 16px;
-            border: none;
+            text-align: center;
+            text-decoration: none;
+            background-color: #4caf50;
+            color: #fff;
             border-radius: 4px;
-            background-color: #4CAF50;
-            color: white;
             cursor: pointer;
-            margin: 10px;
         }
 
         button:hover {
             background-color: #45a049;
         }
+
+        .py-5 {
+            padding-top: 30px;
+            padding-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
-<canvas id="rankingChart" width="1000" height="400"></canvas>
+<div class="py-5 text-center">
+    <h2>맛집 랭킹</h2>
+</div>
+<canvas id="rankingChart" width="1200" height="400"></canvas> <!-- 차트의 넓이를 1200으로 변경 -->
 <form action="/" method="get">
     <button type="submit">홈으로</button>
 </form>
@@ -53,18 +68,18 @@
         .then(data => {
             let count = [];
             let labels = [];
-            data.forEach(el => {
+            data.map(el => {
                 count.push(parseInt(el["count"]))
                 labels.push(el["placeName"])
             })
             const width = canvas.width;
             const height = canvas.height;
-            const barWidth = width / count.length;
+            const barWidth = width / count.length - 20; // 차트 바의 폭을 약간 더 크게 조정
             const maxDataValue = Math.max(...count);
-            const scale = height / maxDataValue;
+            const scale = (height - 40) / maxDataValue; // 차트의 가장 큰 값을 나타내는 바가 약간 남도록 높이 조정
 
             for (let i = 0; i < count.length; i++) {
-                const x = i * barWidth;
+                const x = i * (barWidth + 20) + (barWidth / 4); // 맨 왼쪽에 약간의 빈 공간을 추가하면서 바의 폭을 조정
                 const y = height - count[i] * scale;
 
                 ctx.beginPath();
