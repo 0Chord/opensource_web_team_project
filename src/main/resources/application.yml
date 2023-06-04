@@ -1,7 +1,6 @@
 server:
   port: 8080
 
-
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,3 +14,5 @@ spring:
     show-sql: true
   main:
     allow-bean-definition-overriding: true
+  application:
+    name: Restaurant-service
