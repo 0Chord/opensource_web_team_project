@@ -20,7 +20,7 @@ public class MapController {
 
 	private final Mapservice mapservice;
 
-	@GetMapping("/")
+	@GetMapping("/map/search")
 	public String search(@ModelAttribute SearchDto searchDto) {
 		return "search";
 	}
