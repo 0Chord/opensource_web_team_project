@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/map")
+@RequestMapping("/get-map")
 public class MapRestController {
 
 	private final Mapservice mapservice;

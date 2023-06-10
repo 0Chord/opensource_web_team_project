@@ -52,10 +52,10 @@
     <h2>맛집 랭킹</h2>
 </div>
 <canvas id="rankingChart" width="1200" height="400"></canvas> <!-- 차트의 넓이를 1200으로 변경 -->
-<form action="/" method="get">
+<form action="/restaurant-service/map/search" method="get">
     <button type="submit">홈으로</button>
 </form>
-<form action="/view" method="get">
+<form action="/restaurant-service/view" method="get">
     <button type="submit">맛집 지도</button>
 </form>
 </body>
@@ -63,7 +63,10 @@
     const canvas = document.getElementById("rankingChart");
     let ctx = canvas.getContext('2d');
 
-    fetch("/map/get-location-info-ranking")
+    fetch("/restaurant-service/get-map/get-location-info-ranking",{
+        headers: {
+            Authorization: 'Bearer '+localStorage.getItem("accessToken")
+        }})
         .then(response => response.json())
         .then(data => {
             let count = [];

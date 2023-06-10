@@ -61,17 +61,20 @@
     </div>
     <div id="map"></div>
 </div>
-<form action="/" method="get">
+<form action="/restaurant-service/map/search" method="get">
     <button type="submit">홈으로</button>
 </form>
-<form action="/map/ranking" method="get">
+<form action="/restaurant-service/map/ranking" method="get">
     <button type="submit">맛집 랭킹</button>
 </form>
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=74dd4e03a24463abcf127854291534f9&libraries=clusterer,service"></script>
 <script>
     let positions = [];
-    fetch("/map/get-location-info")
+    fetch("/restaurant-service/get-map/get-location-info",{
+        headers: {
+            Authorization: 'Bearer '+localStorage.getItem("accessToken")
+        }})
         .then(response => response.json())
         .then(data => {
             // console.log(data);
@@ -84,6 +87,7 @@
                         ' <a href="https://map.kakao.com/link/to/' + el["placeName"] + ',' + el["y"] + ',' + el["x"]
                         + '" style="color:blue" target="_blank">길찾기</a></div>'
                 })
+                // console.log(el)
             })
             let container = document.getElementById('map');
             let options = {
