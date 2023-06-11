@@ -1,0 +1,59 @@
+server:
+  port: 8000
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+token:
+  expiration_time: 86400000
+  secret: team_project
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path= /user-service/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: restaurant-service
+          uri: lb://RESTAURANT-SERVICE
+          predicates:
+            - Path=/restaurant-service/get-map/**
+            - Method=GET
+          filters:
+            - RewritePath=/restaurant-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+        - id: restaurant-service
+          uri: lb://RESTAURANT-SERVICE
+          predicates:
+            - Path=/restaurant-service/**
+            - Method=POST
+          filters:
+            - RewritePath=/restaurant-service/(?<segment>.*), /$\{segment}
+        - id: restaurant-service
+          uri: lb://RESTAURANT-SERVICE
+          predicates:
+            - Path=/restaurant-service/**
+            - Method=GET,OPTIONS
+          filters:
+            - RewritePath=/restaurant-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+            - Method=POST,GET,DELETE,OPTIONS
+          filters:
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
